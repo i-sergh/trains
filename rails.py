@@ -38,60 +38,61 @@ class Cross:
                             [  (x, y),   (x - self.step, y)], # left
                             [  (x, y),   (x + self.step, y)], # right
                          # центр  | угол старта | угол финиша 
-                            [(x + self.step, y - self.step), 180, 90 ], # top right
-                            [(x + self.step, y + self.step), 0,   90 ], # right bottom
-                            [(x - self.step, y + self.step), 270, 360], # bottom left
-                            [(x - self.step, y - self.step), 270, 180], # left_top
+                            [(x + self.step, y - self.step), 180, 135 ], # top right
+                            [(x + self.step, y + self.step), 225, 270 ], # right bottom
+                            [(x - self.step, y + self.step), 315, 360], # bottom left
+                            [(x - self.step, y - self.step), 45, 90], # left_top
 
-                            [(x - self.step, y - self.step), 270, 180], # top left
-                            [(x - self.step, y + self.step), 270, 360], # left bottom
-                            [(x + self.step, y + self.step), 0,   90 ], # bottom right
-                            [(x + self.step, y - self.step), 90,  180]  # right top
+                            [(x - self.step, y - self.step), 0, 45], # top left
+                            [(x - self.step, y + self.step), 270, 315], # left bottom
+                            [(x + self.step, y + self.step), 180, 225], # bottom right
+                            [(x + self.step, y - self.step), 90,  135]  # right top
                           ]
         # параметры пути
         
-        self.paramWay  = [ # поворот или прямая
-                           [True],  # top
-                           [True],  # bottom 
-                           [True],  # left 
-                           [True],  # right
+        self.paramWay  = [ # поворот или прямая| видимо не видимо
+                           [True, True],  # top
+                           [True, True],  # bottom 
+                           [True, True],  # left 
+                           [True, True],  # right
                            
-                           [False], # top right
-                           [False], # right bottom
-                           [False],
-                           [False],
+                           [False, True], # top right
+                           [False, True], # right bottom
+                           [False, True],
+                           [False, True],
 
-                           [False],
-                           [False],
-                           [False],
-                           [False]
+                           [False, False],
+                           [False, False],
+                           [False, False],
+                           [False, True]
                            
                         ]
     def draw(self):
         for i, zn in enumerate(self.nlist):
-            if self.paramWay[i][0]:
-                if zn:
-                
-                    cv2.line(cnv, self.drawDots[i][0], self.drawDots[i][1],
-                         (250, 200,30), 4 )
+            if self.paramWay[i][1]:
+                if self.paramWay[i][0]:
+                    if zn:
+                    
+                        cv2.line(cnv, self.drawDots[i][0], self.drawDots[i][1],
+                             (250, 200,30), 4 )
+                    else:
+                        cv2.line(cnv, self.drawDots[i][0], self.drawDots[i][1],
+                             (0, 0,255), 4 )
                 else:
-                    cv2.line(cnv, self.drawDots[i][0], self.drawDots[i][1],
-                         (0, 0,255), 4 )
-            else:
-                if zn:
-                
-                    cv2.ellipse(cnv, self.drawDots[i][0], (30,30), 0,
-                                self.drawDots[i][1], self.drawDots[i][2],
-                                (250, 200,30), 4 )
-                else:
-                    cv2.ellipse(cnv, self.drawDots[i][0], (30,30), 0,
-                                self.drawDots[i][1], self.drawDots[i][2],
-                                (0, 0,255), 4 )
+                    if zn:
+                    
+                        cv2.ellipse(cnv, self.drawDots[i][0], (30,30), 0,
+                                    self.drawDots[i][1], self.drawDots[i][2],
+                                    (250, 200,30), 4 )
+                    else:
+                        cv2.ellipse(cnv, self.drawDots[i][0], (30,30), 0,
+                                    self.drawDots[i][1], self.drawDots[i][2],
+                                    (0, 0,255), 4 )
                 
 n = Cross(300, 300,
           False, True, False, True,
           True, True, True, True, 
-          True, True, True, True)
+          False, False, False, False)
 n.draw()
 #cv2.ellipse(cnv, (330,330), (30,30), 0,  0, -90, (0, 0,255), 4)
 #cv2.ellipse(cnv, (330,330), (30,30), 0,  225, 270, (250, 200,30), 4)
