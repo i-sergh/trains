@@ -9,8 +9,22 @@ cnv = np.zeros( (WINDOW_HEIGHT, WINDOW_WIDTH, 3),
 for_mouse = np.zeros( (WINDOW_HEIGHT, WINDOW_WIDTH, 3),
                dtype=np.uint8() )
 
-def mouseCallbackDecoraor(event, x, y, flags, param, func):
-    pass
+#def doPass(*args):
+#    pass
+
+#def mouseCallbackDecorator(event=0, x=0, y=0, flags=0, param=0, func=doPass):
+    
+#    def wrapper(event, x, y, flags, param):
+#        print('hi')
+#        func(event, x, y, flags, param)
+
+#    return wrapper
+
+def dotsDestroy(event, x, y, flags, param):
+    global d
+    
+    for i in range(len(d)):
+        d[i].set_cross(event, x, y, flags, param)
 
 
 class Dot:
@@ -38,25 +52,29 @@ class Dot:
     def destroy(self):
         cv2.circle(cnv, (self.x, self.y ), 5, (0, 0, 0), -1  )
         self.visibility()
+
     
     def set_cross(self,event, x,y, flags, param):
         #"""
         #    Должно по позиции мыши отрисовывать
         #    но только одну точку
         #"""
-        print(event, x,y, flags, param)
+        #print(event, x,y, flags, param)
         
-        if flags == 1 and abs(x - self.x) < 50 and abs(y - self.y):
+        if flags == 1 and abs(x - self.x) < 20 and abs(y - self.y) < 20:
             self.destroy()
 
 
 cv2.namedWindow('TRAINS')
+cv2.setMouseCallback( 'TRAINS',  dotsDestroy )
+global d
 d = [] 
 for x in range(60, WINDOW_WIDTH-30, 60 ):
     for y in range(60, WINDOW_HEIGHT-30, 60 ):
         d.append( Dot(x, y) )
         d[-1].draw()
-        cv2.setMouseCallback( 'TRAINS', d[-1].set_cross )
+        
+        
 
 #d = Dot(300, 300)
 
