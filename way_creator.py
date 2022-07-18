@@ -75,7 +75,7 @@ for x in range(60, WINDOW_WIDTH-30, 60 ):
         d[-1].draw()
         
         
-
+print(__name__)
 #d = Dot(300, 300)
 
 #cv2.setMouseCallback('TRAINS', set_cross)
