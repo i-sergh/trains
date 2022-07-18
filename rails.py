@@ -2,19 +2,12 @@ import cv2
 import numpy as np
 from random import randint, choice
 
-WINDOW_WIDTH = 600
-WINDOW_HEIGHT = 600
-cnv = np.zeros( (WINDOW_HEIGHT, WINDOW_WIDTH, 3),
-               dtype=np.uint8() )
-for_mouse = np.zeros( (WINDOW_HEIGHT, WINDOW_WIDTH, 3),
-               dtype=np.uint8() )
-
 class Dot:
     """
     Класс точки  интерфейса
     Должен магнититься к точке перекрестка
     """
-    def __init__ (self, x, y):
+    def __init__ (self,cnv, x, y):
         # центр точки
         self.x = x
         self.y = y
@@ -23,6 +16,8 @@ class Dot:
         self.dy = 0
         # отображение точки
         self.visible = False
+
+        
     
     def visibility(self):
         self.visible = not self.visible
@@ -42,7 +37,7 @@ class Dot:
 
 
 class Cross:
-    def __init__(self, x, y, top, bottom, left, right,
+    def __init__(self, cnv, x, y, top, bottom, left, right,
                  top_right, right_bottom, bottom_left,  left_top,
                  top_left,  left_bottom,  bottom_right, right_top):
         '''
@@ -52,6 +47,8 @@ class Cross:
         self.y = y
         
         self.step = 30
+        # холст
+        self.cnv = cnv
 
         # список направлений
         self.nlist = [
@@ -120,44 +117,56 @@ class Cross:
                 if self.paramWay[i][0]:
                     if zn:
                     
-                        cv2.line(cnv, self.drawDots[i][0], self.drawDots[i][1],
+                        cv2.line(self.cnv, self.drawDots[i][0], self.drawDots[i][1],
                              (250, 200,30), 4 )
                     else:
-                        cv2.line(cnv, self.drawDots[i][0], self.drawDots[i][1],
+                        cv2.line(self.cnv, self.drawDots[i][0], self.drawDots[i][1],
                              (0, 0,255), 4 )
                 else:
                     if zn:
                     
-                        cv2.ellipse(cnv, self.drawDots[i][0], (30,30), 0,
+                        cv2.ellipse(self.cnv, self.drawDots[i][0], (30,30), 0,
                                     self.drawDots[i][1], self.drawDots[i][2],
                                     (250, 200,30), 4 )
                     else:
-                        cv2.ellipse(cnv, self.drawDots[i][0], (30,30), 0,
+                        cv2.ellipse(self.cnv, self.drawDots[i][0], (30,30), 0,
                                     self.drawDots[i][1], self.drawDots[i][2],
                                     (0, 0,255), 4 )
 
-n = []
-for x in range(60, WINDOW_WIDTH-30, 60):
-    for y in range(60, WINDOW_HEIGHT-30, 60):  
-         n.append(
-             Cross(x, y,
-          randint(0,1), randint(0,1), randint(0,1), randint(0,1),
-          randint(0,1), randint(0,1), randint(0,1), randint(0,1), 
-          randint(0,1), randint(0,1), randint(0,1), randint(0,1)
-                   )
-                )
-         n[-1].draw()
 
-#cv2.ellipse(cnv, (330,330), (30,30), 0,  0, -90, (0, 0,255), 4)
-#cv2.ellipse(cnv, (330,330), (30,30), 0,  225, 270, (250, 200,30), 4)
+if __name__ == "__main__":
 
-d = Dot(300, 300)
-cv2.namedWindow('TRAINS')
-#cv2.setMouseCallback('TRAINS', set_cross)
-cv2.setMouseCallback('TRAINS', d.set_cross)
-while True:
-    cv2.imshow('TRAINS', cnv)
-    key = cv2.waitKey(1)
-    if key == 27:
-        break
-cv2.destroyAllWindows()
+    WINDOW_WIDTH = 600
+    WINDOW_HEIGHT = 600
+    cnv = np.zeros( (WINDOW_HEIGHT, WINDOW_WIDTH, 3),
+                   dtype=np.uint8() )
+    for_mouse = np.zeros( (WINDOW_HEIGHT, WINDOW_WIDTH, 3),
+                   dtype=np.uint8() )
+
+
+    n = []
+    for x in range(60, WINDOW_WIDTH-30, 60):
+        for y in range(60, WINDOW_HEIGHT-30, 60):  
+             n.append(
+                 Cross(cnv, x, y,
+              randint(0,1), randint(0,1), randint(0,1), randint(0,1),
+              randint(0,1), randint(0,1), randint(0,1), randint(0,1), 
+              randint(0,1), randint(0,1), randint(0,1), randint(0,1)
+                       )
+                    )
+             n[-1].draw()
+
+    #cv2.ellipse(cnv, (330,330), (30,30), 0,  0, -90, (0, 0,255), 4)
+    #cv2.ellipse(cnv, (330,330), (30,30), 0,  225, 270, (250, 200,30), 4)
+
+    
+    cv2.namedWindow('TRAINS')
+    #cv2.setMouseCallback('TRAINS', set_cross)
+    #cv2.setMouseCallback('TRAINS', d.set_cross)
+    while True:
+        cv2.imshow('TRAINS', cnv)
+        key = cv2.waitKey(1)
+        if key == 27:
+            break
+    cv2.destroyAllWindows()
+
