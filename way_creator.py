@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
 from random import randint, choice
-from time import time 
+from time import time
+from rails import Cross
 #def doPass(*args):
 #    pass
 
@@ -40,6 +41,15 @@ class Dot:
 
         # холст
         self.cnv = cnv
+
+        # должен появляться свой перекресток
+
+        self.cross = Cross(self.cnv, self.x, self.y,
+              randint(0,1), randint(0,1), randint(0,1), randint(0,1),
+              randint(0,1), randint(0,1), randint(0,1), randint(0,1), 
+              randint(0,1), randint(0,1), randint(0,1), randint(0,1)
+                        )
+        
     
     def visibility(self):
         self.visible = not self.visible
@@ -55,10 +65,14 @@ class Dot:
         
     def draw(self):
         cv2.circle(self.cnv, (self.x, self.y ), 5, (0, 255,255), -1  )
-        
-        
+        ###
+        self.cross.draw()
+        ###
     def destroy(self):
         cv2.circle(self.cnv, (self.x, self.y ), 5, (0, 0, 0), -1  )
+        ###
+        self.cross.destroy()
+        ###
         
         #cv2.circle(self.cnv, (self.x, self.y ), 5, (0, 255, 255), 1  )
     

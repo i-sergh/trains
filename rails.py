@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from random import randint, choice
-
+'''
 class Dot:
     """
     Класс точки  интерфейса
@@ -33,7 +33,7 @@ class Dot:
         #    но только одну точку
         #"""
         print(event, x,y, flags, param)
-
+'''
 
 
 class Cross:
@@ -132,8 +132,30 @@ class Cross:
                         cv2.ellipse(self.cnv, self.drawDots[i][0], (30,30), 0,
                                     self.drawDots[i][1], self.drawDots[i][2],
                                     (0, 0,255), 4 )
-
-
+    
+    def destroy(self):
+        for i, zn in enumerate(self.nlist):
+            if self.paramWay[i][1]:
+                # для прямых
+                if self.paramWay[i][0]:
+                    if zn:
+                    
+                        cv2.line(self.cnv, self.drawDots[i][0], self.drawDots[i][1],
+                             (0, 0,0), 4 )
+                    else:
+                        cv2.line(self.cnv, self.drawDots[i][0], self.drawDots[i][1],
+                             (0, 0,0), 4 )
+                # для дуг
+                else:
+                    if zn:
+                    
+                        cv2.ellipse(self.cnv, self.drawDots[i][0], (30,30), 0,
+                                    self.drawDots[i][1], self.drawDots[i][2],
+                                    (0, 0,0), 4 )
+                    else:
+                        cv2.ellipse(self.cnv, self.drawDots[i][0], (30,30), 0,
+                                    self.drawDots[i][1], self.drawDots[i][2],
+                                    (0, 0,0), 4 )
 if __name__ == "__main__":
 
     WINDOW_WIDTH = 600
@@ -155,6 +177,8 @@ if __name__ == "__main__":
                        )
                     )
              n[-1].draw()
+             if len(n) % 2 == 0:
+                 n[-1].destroy()    
 
     #cv2.ellipse(cnv, (330,330), (30,30), 0,  0, -90, (0, 0,255), 4)
     #cv2.ellipse(cnv, (330,330), (30,30), 0,  225, 270, (250, 200,30), 4)
