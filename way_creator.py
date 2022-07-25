@@ -3,6 +3,10 @@ import numpy as np
 from random import randint, choice
 from time import time
 from rails import Cross
+
+
+
+
 #def doPass(*args):
 #    pass
 
@@ -42,19 +46,28 @@ class Dot:
         # холст
         self.cnv = cnv
 
+        # информация о соседях
+        self.neighbor_up = None
+        self.neighbor_down = None
+        self.neighbor_left = None
+        self.neighbor_right = None
+        
         # должен появляться свой перекресток
 
         self.cross = Cross(self.cnv, self.x, self.y,
-              randint(0,1), randint(0,1), randint(0,1), randint(0,1),
-              randint(0,1), randint(0,1), randint(0,1), randint(0,1), 
-              randint(0,1), randint(0,1), randint(0,1), randint(0,1)
+              #randint(0,1), randint(0,1), randint(0,1), randint(0,1),
+              #randint(0,1), randint(0,1), randint(0,1), randint(0,1), 
+              #randint(0,1), randint(0,1), randint(0,1), randint(0,1)
+                           0,0,0,0,
+                           0,0,0,0,
+                           0,0,0,0
                         )
         
     
     def visibility(self):
         self.visible = not self.visible
         
-        print( time() - self.ttime  )
+        #print( time() - self.ttime  )
         
         if self.visible and time() - self.ttime > 0.1 :
             self.draw()
@@ -62,6 +75,8 @@ class Dot:
         elif not self.visible and time() - self.ttime > 0.1 :
             self.destroy()
             self.ttime = time()
+
+            
         
     def draw(self):
         cv2.circle(self.cnv, (self.x, self.y ), 5, (0, 255,255), -1  )
@@ -86,6 +101,34 @@ class Dot:
         if flags == 1 and abs(x - self.x) < 20 and abs(y - self.y) < 20:
             self.visibility()
 
+    def init_link(self, direction):
+        # Привет, ето я. Ты для меня слева
+        return self, direction
+
+    def get_invite(self, other_self, direction):
+        '''
+            получение информации о соседе и отправка иформации о себе
+        '''
+        # Если он видит меня слева, значит он справа
+        if direction == 'left':
+            self.neightbor_right = other_self
+        # Если я для соседа сверху, то он сосед снизу
+        elif direction == 'up':
+            self.neightbor_down = other_self
+        
+        other_self.callback_invite( self,direction )
+        
+    def callback_invite(self, other_self):
+        '''
+            получение информации о соседе только
+        '''
+        # Если сосед слева ответил, то он есть
+        if direction == 'left':
+            self.neightbor_left = other_self
+        # Если сосед сверху ответил, то он есть
+        elif direction == 'up':
+            self.neightbor_up = other_self
+    
 
 if __name__ == '__main__':
     WINDOW_WIDTH = 600
@@ -105,7 +148,10 @@ if __name__ == '__main__':
         for y in range(60, WINDOW_HEIGHT-30, 60 ):
             d.append( Dot(cnv, x, y) )
             d[-1].draw()
-            
+            try:
+                d[-2].get_invite(     d[-1].init_link( 'left' )     )
+            except:
+                pass
             
     
     #d = Dot(300, 300)
