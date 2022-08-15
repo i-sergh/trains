@@ -156,6 +156,16 @@ class Cross:
                         cv2.ellipse(self.cnv, self.drawDots[i][0], (30,30), 0,
                                     self.drawDots[i][1], self.drawDots[i][2],
                                     (0, 0,0), 4 )
+
+    def rail_interface (self, rail_side, val ):
+        self.nlist [
+                self.ndict[rail_side]
+            ] = val
+    def rail_q_interface(self, rail_side ):
+        return self.nlist [
+                self.ndict[rail_side]
+            ]    
+    
 if __name__ == "__main__":
 
     WINDOW_WIDTH = 600
