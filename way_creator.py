@@ -87,8 +87,8 @@ class Dot:
         # возможно время мы уберём >>> and time() - self.ttime > 0.1 
         if self.visible :
             
-            if self.neighbor_left != None and self.neighbor_right != None :
-               #self.neighbor_left.visible and self.neighbor_right.visible:
+            if self.neighbor_left != None and self.neighbor_right != None and \
+               self.neighbor_left.visible and self.neighbor_right.visible:
                 
                 self.cross.rail_interface("left", True)
                 self.cross.rail_interface("right", True)
@@ -103,8 +103,8 @@ class Dot:
                 self.neighbor_left.cross.draw()
                 self.neighbor_right.cross.draw()
               
-            if self.neighbor_up != None and self.neighbor_down != None :
-               #self.neighbor_left.visible and self.neighbor_right.visible:
+            if self.neighbor_up != None and self.neighbor_down != None and \
+               self.neighbor_up.visible and self.neighbor_down.visible:
                 
                 self.cross.rail_interface("top", True)
                 self.cross.rail_interface("bottom", True)
@@ -119,15 +119,15 @@ class Dot:
                 self.neighbor_up.cross.draw()
                 self.neighbor_down.cross.draw()
                 
-            if self.neighbor_up != None and self.neighbor_left != None :
-               #self.neighbor_left.visible and self.neighbor_right.visible:
+            if self.neighbor_up != None and self.neighbor_left != None and \
+               self.neighbor_up.visible and self.neighbor_left.visible:
                 
                 self.cross.rail_interface("top_left", True)
                 self.cross.rail_interface("left_top", True)
 
                 self.neighbor_up.cross.rail_interface('bottom', True)
                               #                           #
-                #self.neighbor_left.cross.rail_interface('top', True)
+                self.neighbor_left.cross.rail_interface('right', True)
 
                 self.neighbor_up.cross.destroy()
                 self.neighbor_left.cross.destroy()
@@ -135,26 +135,90 @@ class Dot:
                 self.neighbor_up.cross.draw()
                 self.neighbor_left.cross.draw()
                 
-            if self.neighbor_up != None and self.neighbor_right != None :
-               #self.neighbor_left.visible and self.neighbor_right.visible:
+            if self.neighbor_up != None and self.neighbor_right != None and \
+               self.neighbor_up.visible and self.neighbor_right.visible:
                 
                 self.cross.rail_interface("top_right", True)
                 self.cross.rail_interface("right_top", True)
 
                 self.neighbor_up.cross.rail_interface('bottom', True)
                               #                           #
-                #self.neighbor_left.cross.rail_interface('top', True)
+                self.neighbor_right.cross.rail_interface('left', True)
 
                 self.neighbor_up.cross.destroy()
                 self.neighbor_right.cross.destroy()
                 
                 self.neighbor_up.cross.draw()
-                self.neighbor_right.cross.draw()               
+                self.neighbor_right.cross.draw()
+
+            if self.neighbor_down != None and self.neighbor_right != None and \
+               self.neighbor_down.visible and self.neighbor_right.visible:
+                
+                self.cross.rail_interface("bottom_right", True)
+                self.cross.rail_interface("right_bottom", True)
+
+                self.neighbor_down.cross.rail_interface('top', True)
+                              #                           #
+                self.neighbor_right.cross.rail_interface('left', True)
+
+                self.neighbor_down.cross.destroy()
+                self.neighbor_right.cross.destroy()
+                
+                self.neighbor_down.cross.draw()
+                self.neighbor_right.cross.draw()
+            if self.neighbor_down != None and self.neighbor_left != None and \
+               self.neighbor_down.visible and self.neighbor_left.visible:
+                
+                self.cross.rail_interface("bottom_left", True)
+                self.cross.rail_interface("left_bottom", True)
+
+                self.neighbor_down.cross.rail_interface('top', True)
+                              #                           #
+                self.neighbor_left.cross.rail_interface('right', True)
+
+                self.neighbor_down.cross.destroy()
+                self.neighbor_left.cross.destroy()
+                
+                self.neighbor_down.cross.draw()
+                self.neighbor_left.cross.draw()                 
             self.draw()
             self.ttime = time()
             
         elif not self.visible  :
+
             self.destroy()
+            self.neighbor_up.cross.destroy()
+            self.neighbor_left.cross.destroy()
+            self.neighbor_right.cross.destroy()
+            self.neighbor_down.cross.destroy()
+            self.cross.rail_interface("left", False)
+            self.cross.rail_interface("right", False)
+            self.cross.rail_interface("top", False)
+            self.cross.rail_interface("bottom", False)
+
+            self.cross.rail_interface("right_bottom", False)
+            self.cross.rail_interface("top_right", False)
+            self.cross.rail_interface("bottom_left", False)
+            self.cross.rail_interface("bottom_left", False)
+
+            self.cross.rail_interface("top_left", False)
+            self.cross.rail_interface("left_bottom", False)
+            self.cross.rail_interface("bottom_right", False)
+            self.cross.rail_interface("right_top", False)
+
+            self.neighbor_down.cross.rail_interface('top', False)
+            self.neighbor_left.cross.rail_interface('right', False)
+            self.neighbor_right.cross.rail_interface('left', False)
+            self.neighbor_up.cross.rail_interface('bottom', False)
+
+            
+                
+            self.neighbor_up.cross.draw()
+            self.neighbor_left.cross.draw()
+            self.neighbor_right.cross.draw()
+            self.neighbor_down.cross.draw()
+
+            
             self.ttime = time()
 
             
