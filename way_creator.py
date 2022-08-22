@@ -69,14 +69,26 @@ class Dot:
     def visibility(self):
         self.visible = not self.visible
         
-        print( self.idx  )
-        print(self.neighbor_left)
-        print(self.neighbor_right)
-        
+        self.cross.rail_interface("left", True)
+        self.cross.rail_interface("right", True)
+        self.cross.rail_interface("top", True)
+        self.cross.rail_interface("bottom", True)
+
+        self.cross.rail_interface("right_bottom", True)
+        self.cross.rail_interface("top_right", True)
+        self.cross.rail_interface("bottom_left", True)
+        self.cross.rail_interface("bottom_left", True)
+
+        self.cross.rail_interface("top_left", True)
+        self.cross.rail_interface("left_bottom", True)
+        self.cross.rail_interface("bottom_right", True)
+        self.cross.rail_interface("right_top", True)
+        self.cross.draw()
         # возможно время мы уберём >>> and time() - self.ttime > 0.1 
         if self.visible :
-            if self.neighbor_left != None and self.neighbor_right != None and \
-               self.neighbor_left.visible and self.neighbor_right.visible:
+            
+            if self.neighbor_left != None and self.neighbor_right != None :
+               #self.neighbor_left.visible and self.neighbor_right.visible:
                 print(self.neighbor_left)
                 print(self.neighbor_right)
                 self.cross.rail_interface("left", True)
@@ -86,16 +98,22 @@ class Dot:
                               #                           #
                 self.neighbor_right.cross.rail_interface('left', True)
 
-                self.neighbor_left.destroy()
-                self.neighbor_right.destroy()
+                self.neighbor_left.cross.destroy()
+                self.neighbor_right.cross.destroy()
                 
-                self.neighbor_left.draw()
-                self.neighbor_right.draw()
-
+                self.neighbor_left.cross.draw()
+                self.neighbor_right.cross.draw()
+                
             #print(self.neighbor_right.cross.rail_interface)
             #print(self.neighbor_left.cross.rail_interface)
             self.draw()
             self.ttime = time()
+            print( self.idx  )
+            print('left', self.neighbor_left != None)
+            print('right', self.neighbor_right != None)
+            print('up', self.neighbor_up)
+            print('dowh', self.neighbor_down)
+            print(self.neighbor_left.idx, self.neighbor_left.visible)
         elif not self.visible  :
             self.destroy()
             self.ttime = time()
@@ -144,16 +162,16 @@ class Dot:
         '''
             получение информации о соседе и отправка иформации о себе
         '''
-
+        
         other_self, direction = seq[0], seq[1]
         
         # Если он видит меня слева, значит он справа
         if direction == 'left':
-            self.neightbor_right = other_self
+            self.neighbor_right = other_self
             
         # Если я для соседа сверху, то он сосед снизу
         elif direction == 'up':
-            self.neightbor_down = other_self
+            self.neighbor_down = other_self
         
         other_self.callback_invite( self, direction )
         
@@ -164,11 +182,11 @@ class Dot:
         
         # Если сосед слева ответил, то он есть
         if direction == 'left':
-            self.neightbor_left = other_self
+            self.neighbor_left = other_self
             
         # Если сосед сверху ответил, то он есть
         elif direction == 'up':
-            self.neightbor_up = other_self
+            self.neighbor_up = other_self
     
 
 if __name__ == '__main__':
@@ -195,13 +213,13 @@ if __name__ == '__main__':
             
             if len(d )> 1:
             #try:
-                d[-2].get_invite( d[-1].init_link( 'left' ) )
+                d[-2].get_invite( d[-1].init_link( 'up' ) )
                 #print('im trying')
             #except:
              #   pass
             #d[-1].visibility()
-            if len(d )> 1:
-                pass
+            if len(d )> 9:
+                d[-10].get_invite( d[-1].init_link( 'left' ) )
     
     #d = Dot(300, 300)
 

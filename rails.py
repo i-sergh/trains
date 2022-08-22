@@ -161,11 +161,29 @@ class Cross:
         self.nlist [
                 self.ndict[rail_side]
             ] = val
+
+        self.update_params()
     def rail_q_interface(self, rail_side ):
         return self.nlist [
                 self.ndict[rail_side]
-            ]    
-    
+            ]
+    def update_params(self):
+        self.paramWay[0][1] = self.rail_q_interface('top') + self.rail_q_interface('bottom')
+        self.paramWay[1][1] = self.rail_q_interface('top') + self.rail_q_interface('bottom')
+        self.paramWay[2][1] = self.rail_q_interface('left') + self.rail_q_interface('right')
+        self.paramWay[3][1] = self.rail_q_interface('left') + self.rail_q_interface('right')
+
+        self.paramWay[4][1] = self.rail_q_interface('top_right') + self.rail_q_interface('right_top')
+        self.paramWay[5][1] = self.rail_q_interface('right_bottom') + self.rail_q_interface('bottom_right')
+        self.paramWay[6][1] = self.rail_q_interface('bottom_left') + self.rail_q_interface('left_bottom')
+        self.paramWay[7][1] = self.rail_q_interface('left_top') + self.rail_q_interface('top_left')
+
+        self.paramWay[8][1] = self.rail_q_interface('left_top') + self.rail_q_interface('top_left')
+        self.paramWay[9][1] = self.rail_q_interface('bottom_left') + self.rail_q_interface('left_bottom')
+        self.paramWay[10][1] = self.rail_q_interface('right_bottom') + self.rail_q_interface('bottom_right')
+        self.paramWay[11][1] = self.rail_q_interface('top_right') + self.rail_q_interface('right_top')
+
+        print(self.paramWay)
 if __name__ == "__main__":
 
     WINDOW_WIDTH = 600
