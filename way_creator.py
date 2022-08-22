@@ -30,7 +30,9 @@ class Dot:
     Класс точки  интерфейса
     Должен магнититься к точке перекрестка
     """
+    idx = 0
     def __init__ (self, cnv, x, y):
+        
         # центр точки
         self.x = x
         self.y = y
@@ -38,7 +40,7 @@ class Dot:
         self.dx = 0
         self.dy = 0
         # отображение точки
-        self.visible = True
+        self.visible = False
 
         # счетчик времени
         self.ttime = time()
@@ -67,14 +69,16 @@ class Dot:
     def visibility(self):
         self.visible = not self.visible
         
-        #print( time() - self.ttime  )
-
-
+        print( self.idx  )
+        print(self.neighbor_left)
+        print(self.neighbor_right)
+        
         # возможно время мы уберём >>> and time() - self.ttime > 0.1 
         if self.visible :
             if self.neighbor_left != None and self.neighbor_right != None and \
                self.neighbor_left.visible and self.neighbor_right.visible:
-
+                print(self.neighbor_left)
+                print(self.neighbor_right)
                 self.cross.rail_interface("left", True)
                 self.cross.rail_interface("right", True)
 
@@ -175,7 +179,7 @@ if __name__ == '__main__':
     for_mouse = np.zeros( (WINDOW_HEIGHT, WINDOW_WIDTH, 3),
                    dtype=np.uint8() )
 
-
+    idx = 0
 
     cv2.namedWindow('TRAINS')
     cv2.setMouseCallback( 'TRAINS',  dotsDestroy )
@@ -184,6 +188,10 @@ if __name__ == '__main__':
     for x in range(60, WINDOW_WIDTH-30, 60 ):
         for y in range(60, WINDOW_HEIGHT-30, 60 ):
             d.append( Dot(cnv, x, y) )
+
+            # для отладки
+            d[-1].idx = idx
+            idx += 1
             
             if len(d )> 1:
             #try:
@@ -192,7 +200,8 @@ if __name__ == '__main__':
             #except:
              #   pass
             #d[-1].visibility()
-            
+            if len(d )> 1:
+                pass
     
     #d = Dot(300, 300)
 
