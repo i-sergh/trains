@@ -183,7 +183,7 @@ class Cross:
         self.paramWay[10][1] = self.rail_q_interface('right_bottom') + self.rail_q_interface('bottom_right')
         self.paramWay[11][1] = self.rail_q_interface('top_right') + self.rail_q_interface('right_top')
 
-        print(self.paramWay)
+        #print(self.paramWay)
 if __name__ == "__main__":
 
     WINDOW_WIDTH = 600
