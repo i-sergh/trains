@@ -3,7 +3,7 @@ import numpy as np
 from random import randint, choice
 from time import time
 from rails import Cross
-
+from train import Train
 
 
 
@@ -297,7 +297,7 @@ if __name__ == '__main__':
     WINDOW_HEIGHT = 600
     cnv = np.zeros( (WINDOW_HEIGHT, WINDOW_WIDTH, 3),
                    dtype=np.uint8() )
-    for_mouse = np.zeros( (WINDOW_HEIGHT, WINDOW_WIDTH, 3),
+    for_train = np.zeros( (WINDOW_HEIGHT, WINDOW_WIDTH, 3),
                    dtype=np.uint8() )
 
     idx = 0
@@ -324,15 +324,43 @@ if __name__ == '__main__':
             if len(d )> 9:
                 d[-10].get_invite( d[-1].init_link( 'left' ) )
     
-    #d = Dot(300, 300)
 
-    #cv2.setMouseCallback('TRAINS', set_cross)
-    #cv2.setMouseCallback('TRAINS', d.set_cross)
+    trains_dot = randint(0,81) 
+
+    d[trains_dot].visibility()
+
+    tr = Train( d[trains_dot].y,
+                 d[trains_dot].x,
+                 d[trains_dot] )
+
+    
+    
     while True:
-        cv2.imshow('TRAINS', cnv)
+        for_train *= 0
+        for_train = np.where(for_train!= 0 , for_train, cnv)
+
+        tr.destroy(for_train)        
+        
+        tr.grad+=1
+
+        tr.draw(for_train)
+
+        cv2.imshow('TRAINS', for_train)
+
+        
         key = cv2.waitKey(1)
         if key == 27: # ESC
             break
+
+        if key == ord('w'): #вперед
+            tr.move(for_train, -2, 0)
+            
+        if key == ord('s'): # назазд
+            tr.move(for_train, 2, 0)
+        if key == ord('a'): # влево
+            tr.move(for_train, 0, -2)
+        if key == ord('d'): # вправо
+            tr.move(for_train, 0, 2)
     cv2.destroyAllWindows()
 
 
